@@ -34,18 +34,18 @@ public class RmqApplication {
 
 	@Bean
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
-											 MessageListenerAdapter listenerAdapter) {
+											 Receiver receiver) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
 		container.setConnectionFactory(connectionFactory);
 		container.setQueueNames(queueName);
-		container.setMessageListener(listenerAdapter);
+		container.setMessageListener(new MessageListenerAdapter(receiver, "receiveMessage"));
 		return container;
 	}
 
-	@Bean
+	/*@Bean
 	MessageListenerAdapter listenerAdapter(Receiver receiver) {
 		return new MessageListenerAdapter(receiver, "receiveMessage");
-	}
+	}*/
 	public static void main(String[] args) {
 		SpringApplication.run(RmqApplication.class, args);
 	}
