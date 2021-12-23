@@ -17,7 +17,7 @@ public class MyRestController {
 
     @GetMapping("/test")
     public String test() throws InterruptedException {
-        Assert.notNull(null, "Delegate must not be null");
+        //Assert.notNull(null, "Delegate must not be null");
         System.out.println("Sending message...");
         //convertAndSend calls method channel.basicPublish of amqp lib
         rabbitTemplate.convertAndSend(RmqApplication.topicExchangeName, "foo.bar.baz", "Hello from RabbitMQ!");

@@ -1,9 +1,6 @@
 package com.example.rmq;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -13,7 +10,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class RmqApplication {
-	static final String topicExchangeName = "spring-boot-exchange";
+	static final String topicExchangeName = "spring-boot-topic-exchange";
+	static final String directExchangeName = "spring-boot-direct-exchange";
 
 	static final String queueName = "spring-boot";
 
@@ -25,6 +23,16 @@ public class RmqApplication {
 	@Bean
 	TopicExchange exchange() {
 		return new TopicExchange(topicExchangeName);
+	}
+
+	@Bean
+	DirectExchange directExchange(){
+		return new DirectExchange(directExchangeName);
+	}
+
+	@Bean
+	Binding directBinding(Queue queue, DirectExchange directExchange){
+		return BindingBuilder.bind(queue).to(directExchange).with("foo.direct.bar.#");
 	}
 
 	@Bean
